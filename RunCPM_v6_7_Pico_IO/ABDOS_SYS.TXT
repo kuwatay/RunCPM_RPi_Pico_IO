@@ -1,0 +1,13 @@
+This are 3 ABDOS.SYS versions:
+
+ABDOS.Z60
+for 60k TPA ZCPR3
+
+ABDOS.60K
+for 60k TPA non-ZCPR3
+
+ABDOS.64K
+for 64k TPA non-ZCPR3
+
+Backup you old ABDOS.SYS and copy the one
+you want to ABDOS.SYS

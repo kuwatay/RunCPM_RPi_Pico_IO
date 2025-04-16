@@ -1,0 +1,5 @@
+; Build BDOS.SYS
+Z80ASM BDOS/H
+MLOAD BDOS.SYS=BDOS.HEX
+ERA BDOS.HEX
+

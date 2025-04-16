@@ -1,0 +1,48 @@
+Alternative BDOS for RunCPM
+---------------------------
+Pavel Zampach, 2020
+
+BDOS for RunCPM (function BDOS in CMP.H) has one essential difference - BDOS 
+functions DO NOT use BIOS functions. So some system programs (XSUB, ZEX), 
+which use remapping of BIOS jump vector, simply don't work. Second 
+disadvantage of original design is restoration of BIOS jump vector by every 
+warm boot
+Alternative BDOS for RunCPM handles BDOS functions 0-11 by calling BIOS 
+functions, other (disk) functions are handled by standard way.
+
+Installation
+------------
+
+* copy file BDOS.SYS to drive A:, user 0. Bundled file is intended for RunCPM 
+60K, if you use other version, you have to set right values to source code and 
+compile it.
+
+* add bundled file CPM.H into your RunCPM project (backup original one). If 
+you uncomment line #define STDBDOS, you will have standard BDOS. Changes are 
+marked by "#####".
+
+* in file GLOBAL.H change:
+#define SCBaddr (BDOSpage + 480) // Address of the System Control Block
+#define tmpFCB  (BDOSpage + 444) // Address of the temporary FCB
+
+* in file RUNCPM.INO add line:
+if (VersionCCP >= 0x10 || SD.exists(CCPname)) {
+  _PatchBIOS();  // ##### add this line
+  while (true) {
+
+* recompile RunCPM
+
+Notes
+-----
+
+* BDOS function 10 (edit buffer) has minimalistic design. Nobody uses teletype 
+as CP/M console in these days, so you can use only:
+CR or LF   end of editing.
+^H or del  delete the last char
+^U or ^Y   clear buffer
+^C         as the first key cause warm start
+
+* command processor ZEX is distributed only as source text, because it is 
+dependent on ZCPR settings. Simply compile it (with right values in 
+Z3BASE.LIB) by command:
+  Z80ASM ZEX
