@@ -6,7 +6,7 @@ This program is a fork of RunCPM_RPo_Pico
 
 This repository provides a program that extends I/O port emulation for RunCPMRPoPico. By using the extended functionality provided in this repository, you can directly control GPIOs through Z80 I/O instructions, making it easy to perform external control operations.
 
-![pico_io_01] (https://github.com/kuwatay/RunCPM_RPi_Pico_IO/blob/main/Images/pico_io_01.jpg)
+![pico_io_01] (https://github.com/kuwatay/RunCPM_RPi_Pico_IO/blob/main/Images/pico_io_01.jpg?raw=true)
 
 For parts outside the extension, please refer to the original repository.
 
