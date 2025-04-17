@@ -4,7 +4,9 @@ This program is a fork of RunCPM_RPo_Pico
 
  ![RunCPM_RPo_Pico](https://github.com/guidol70/RunCPM_RPi_Pico)
 
-This repository provides a program that extends I/O port emulation for RunCPMRPoPico. For parts outside the extension, please refer to the original repository.
+This repository provides a program that extends I/O port emulation for RunCPMRPoPico. By using the extended functionality provided in this repository, you can directly control GPIOs through Z80 I/O instructions, making it easy to perform external control operations.
+
+For parts outside the extension, please refer to the original repository.
 
 Specifically, two 8-bit ports have been added, which can be directly accessed by the Z80 CPU using I/O instructions.
 
@@ -26,7 +28,12 @@ Each pin (bit) of the port can be individually configured as either an input or 
 
 To set the port pin as an output, it is necessary to write a 1 to the corresponding bit in the DDR (Data Direction Register).To set it as an input, you need to write a 0 to the corresponding bit in the DDR. 
 
-Similarly, to enable the pull-up on a port pin, you need to write a 1 to the corresponding bit in the PUR (Pull-Up Register).
+When a pin is configured as an output, the value set in the I/O register is output to the corresponding GPIO.
+When the pin is configured as an input, the value of the corresponding GPIO can be read.
+
+Similarly, to enable the pull-up on a port pin, you need to write a 1 to the corresponding bit in the PUR (Pull-Up Register).The Pull-Up Register is only effective when the pin is configured as an input.
+
+The DDR and PUR can also be read to retrieve the values that have been set
 
 ## GPIO Mappinng
 The port corresponds to the physical GPIOs as follows.
@@ -35,7 +42,7 @@ The port corresponds to the physical GPIOs as follows.
 PORT A
 	A0-A7: GPIO2-GPIO9
 	
-PORT B<br>
+PORT B
 	B0-B5: GPIO10-GPIO15
 	B6-B7: GPIO20-GPIO21
 	
