@@ -17,12 +17,16 @@ PORT A
 	Ddata Direction Register : $5
 	Pull-Up Register: $6
 	
-PORT B<br>
+PORT B
 	I/O register: $0
 	Ddata Direction Register : $1
 	Pull-Up Register: $2
 ```
-Each pin (bit) of the port can be individually configured as either an input or an output.　The default configuration of port pins is set to input.　To set the port pin as an output, it is necessary to write a 1 to the corresponding bit in the DDR (Data Direction Register).To set it as an input, you need to write a 0 to the corresponding bit in the DDR. Similarly, to enable the pull-up on a port pin, you need to write a 1 to the corresponding bit in the PUR (Pull-Up Register).
+Each pin (bit) of the port can be individually configured as either an input or an output.　The default configuration of port pins is set to input.
+
+To set the port pin as an output, it is necessary to write a 1 to the corresponding bit in the DDR (Data Direction Register).To set it as an input, you need to write a 0 to the corresponding bit in the DDR. 
+
+Similarly, to enable the pull-up on a port pin, you need to write a 1 to the corresponding bit in the PUR (Pull-Up Register).
 
 ## GPIO Mappinng
 The port corresponds to the physical GPIOs as follows.
