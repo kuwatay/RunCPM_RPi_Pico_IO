@@ -1,4 +1,6 @@
 /*
+  RunCPM_v6_7_Pico_IO 
+  
   SD card connection
 
   This example shows how to read and write data to and from an SD card file
@@ -15,6 +17,41 @@
 // #include <MemoryFree.h>
 
 #include "globals.h"
+
+// IO extension 
+#define USE_PARALLEL_PORT
+// parallel port
+#ifdef USE_PARALLEL_PORT
+#define PORT_A0 (2)
+#define PORT_A1 (3)
+#define PORT_A2 (4)
+#define PORT_A3 (5)
+#define PORT_A4 (6)
+#define PORT_A5 (7)
+#define PORT_A6 (8)
+#define PORT_A7 (9)
+
+#define PORT_B0 (10)
+#define PORT_B1 (11)
+#define PORT_B2 (12)
+#define PORT_B3 (13)
+#define PORT_B4 (14)
+#define PORT_B5 (15)
+#define PORT_B6 (20)
+#define PORT_B7 (21)
+
+uint32 port_a[] = {PORT_A0,PORT_A1,PORT_A2,PORT_A3,PORT_A4,PORT_A5,PORT_A6,PORT_A7};
+uint32 port_a_out = 0x00;
+uint32 port_a_in  = 0x00;
+uint32 port_a_ddr = 0x00; // ALL INPUT
+uint32 port_a_pup = 0x00; // no pull-up
+uint32 port_b[] = {PORT_B0,PORT_B1,PORT_B2,PORT_B3,PORT_B4,PORT_B5,PORT_B6,PORT_B7};
+
+uint32 port_b_out = 0x00;
+uint32 port_b_in  = 0x00;
+uint32 port_b_ddr = 0x00; // ALL INPUT
+uint32 port_b_pup = 0x00; // no pull-up
+#endif
 
 // =========================================================================================
 // Guido Lehwalder's Code-Revision-Number
@@ -90,6 +127,18 @@ void setup(void) {
 
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
+
+//
+// GPIO port control via IN/OUT morecat_lab
+// 
+#ifdef USE_PARALLEL_PORT
+  for (int i = 0 ; i <8 ; i++) {
+    pinMode(port_a[i],INPUT);  // set all 'input' for Port A
+    pinMode(port_b[i],INPUT);  // set all 'input' for Port B
+  }
+
+  //digitalWrite(PORT_B0,HIGH);
+#endif
 
 // =========================================================================================
 // Serial Port Definition

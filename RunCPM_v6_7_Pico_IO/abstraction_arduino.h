@@ -480,10 +480,119 @@ uint8 _sys_makedisk(uint8 drive) {
 /* Hardware abstraction functions */
 /*===============================================================================*/
 void _HardwareOut(const uint32 Port, const uint32 Value) {
-
+#ifdef USE_PARALLEL_PORT
+	// Port A
+	if (Port == 4) {  // Out PORT_A
+		port_a_out = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_a_ddr >> i)&1== 1) {  // for output pin
+				digitalWrite(port_a[i], (Value >> i)&1 ? HIGH : LOW);
+			}
+		}
+		port_a_out = Value;
+	} else if (Port == 5) {  // Set Port_b_ddr
+		port_a_ddr = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((Value >> i)&1 == 1) {  // for OUTPUT pin
+				pinMode(port_a[i],OUTPUT);
+			} else {   // for input pin
+				if ((port_a_pup >> i)&1== 0) {
+					pinMode(port_a[i], INPUT);
+				} else {
+					pinMode(port_a[i], INPUT_PULLUP);					
+				}
+			}
+		}
+	// Port B
+	} else if (Port == 6) {  // Set Port_b_pup
+		port_a_pup = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_a_ddr >> i)&1 == 0) {  // for input pin only
+				if ((port_a_pup >> i)&1== 0) {
+					pinMode(port_a[i], INPUT);
+				} else {
+					pinMode(port_a[i], INPUT_PULLUP);					
+				}
+			}
+		}
+	} else if (Port == 0) {  // Out PORT_B
+		port_b_out = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_b_ddr >> i)&1== 1) {  // for output pin
+				digitalWrite(port_b[i], (Value >> i)&1 ? HIGH : LOW);
+			}
+		}
+		port_b_out = Value;
+	} else if (Port == 1) {  // Set Port_b_ddr
+		port_b_ddr = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((Value >> i)&1 == 1) {  // for OUTPUT pin
+				pinMode(port_b[i],OUTPUT);
+			} else {   // for input pin
+				if ((port_b_pup >> i)&1== 0) {
+					pinMode(port_b[i], INPUT);
+				} else {
+					pinMode(port_b[i], INPUT_PULLUP);					
+				}
+			}
+		}
+	} else if (Port == 2) {  // Set Port_b_pup
+		port_b_pup = Value;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_b_ddr >> i)&1 == 0) {  // for input pin only
+				if ((port_b_pup >> i)&1== 0) {
+					pinMode(port_b[i], INPUT);
+				} else {
+					pinMode(port_b[i], INPUT_PULLUP);					
+				}
+			}
+		}
+	}
+#endif
 }
 
 uint32 _HardwareIn(const uint32 Port) {
+#ifdef USE_PARALLEL_PORT
+	// Port A
+	if (Port == 4) {
+		uint32 v=0, x=0;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_a_ddr >> i)&1 == 0) {  // for input pin
+				x = digitalRead(port_a[i]);
+			} else {  // for output pin
+				x = (port_a_out >> i)&1;
+			}
+			if (x == 1) {
+				v |= (x << i);
+			}
+		}
+		port_a_in = v;
+		return v;
+	} else if (Port == 5){
+		return port_a_ddr;
+	} else if (Port == 6){
+		return port_a_pup;
+	// Port B
+	} else	if (Port == 0) {
+		uint32 v=0, x=0;
+		for (int i=0 ; i<8 ; i++) {
+			if ((port_b_ddr >> i)&1 == 0) {  // for input pin
+				x = digitalRead(port_b[i]);
+			} else {  // for output pin
+				x = (port_b_out >> i)&1;
+			}
+			if (x == 1) {
+				v |= (x << i);
+			}
+		}
+		port_b_in = v;
+		return v;
+	} else if (Port == 1){
+		return port_b_ddr;
+	} else if (Port == 2){
+		return port_b_pup;
+	}
+#endif
 	return 0;
 }
 
